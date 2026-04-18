@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MyApi.Data;
+using MyApi.Domain.Entities;
 
 namespace MyApi.Controllers
 {
@@ -7,5 +10,61 @@ namespace MyApi.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
+        private TaskDbContext _dbContext;
+        public TaskController(TaskDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TodoTask>>> GetAsync()
+        {
+            return await _dbContext.Tasks.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TodoTask>> GetById(int id)
+        {
+            var matchedTask = await _dbContext.Tasks
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (matchedTask == null)
+                return NotFound();
+
+            return matchedTask;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<TodoTask>> Create(TodoTask mytask)
+        {
+            await _dbContext.Tasks.AddAsync(mytask);
+            await _dbContext.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetById), new {id= mytask.Id}, mytask);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<TodoTask>> Update(TodoTask mytask)
+        {
+            _dbContext.Tasks.Update(mytask);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var matchedTask = await _dbContext.Tasks
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (matchedTask == null)
+                return NotFound();
+
+            _dbContext.Tasks.Remove(matchedTask);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
