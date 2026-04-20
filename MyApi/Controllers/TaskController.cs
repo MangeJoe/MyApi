@@ -16,12 +16,14 @@ namespace MyApi.Controllers
             _dbContext = dbContext;
         }
 
+        //get a list of all tasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoTask>>> GetAsync()
         {
             return await _dbContext.Tasks.ToListAsync();
         }
 
+        //get a Task by ID
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoTask>> GetById(int id)
         {
@@ -33,7 +35,7 @@ namespace MyApi.Controllers
 
             return matchedTask;
         }
-
+        //this method is used for creating a new Task
         [HttpPost]
         public async Task<ActionResult<TodoTask>> Create(TodoTask mytask)
         {
@@ -42,7 +44,7 @@ namespace MyApi.Controllers
 
             return CreatedAtAction(nameof(GetById), new {id= mytask.Id}, mytask);
         }
-
+        //We update a task, using its own object
         [HttpPut]
         public async Task<ActionResult<TodoTask>> Update(TodoTask mytask)
         {
@@ -51,7 +53,7 @@ namespace MyApi.Controllers
 
             return Ok();
         }
-
+        // delete a task by first checking if it exits then delete if it does
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -66,5 +68,6 @@ namespace MyApi.Controllers
 
             return Ok();
         }
+
     }
 }

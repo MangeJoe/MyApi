@@ -1,15 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using MyApi.Data;
-using System.Reflection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<TaskDbContext>(x=>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -23,15 +25,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+ 
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-
-    app.MapControllers();
-
-
+app.MapControllers();
 
 app.Run();
