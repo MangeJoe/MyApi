@@ -8,7 +8,7 @@ namespace MyApi.Data
         public TaskDbContext(DbContextOptions options) : base(options)
         { 
         }
-
+        //this is a list of tasks
         public DbSet<TodoTask> Tasks { get; set; }
     }
 }
