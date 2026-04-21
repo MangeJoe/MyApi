@@ -30,7 +30,7 @@ namespace AppPres
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddApiClientService(x => x.ApiBaseAddress = Configuration.GetValue<string>(""));
+            services.AddApiClientService(x => x.ApiBaseAddress = Configuration.GetValue<string>("ApiBaseAddress"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
