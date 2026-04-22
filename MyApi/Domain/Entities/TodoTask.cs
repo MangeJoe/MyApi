@@ -22,8 +22,9 @@ namespace MyApi.Domain.Entities
             [Column("duedate")]
             public DateTime DueDate { get; set; }
 
+        //please do not forget that you still have to change this in the database using migrations!!!!!!!!!!!!!!!!!
             [Column("status")]
-            public int Status { get; set; }
+            public bool Status { get; set; }
 
             [Column("priority")]
             public int Priority { get; set; }
