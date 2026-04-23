@@ -16,7 +16,7 @@ namespace MyApi.Controllers
             _dbContext = dbContext;
         }
 
-        //get a list of all tasks
+        //get a list of all task
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoTask>>> GetAsync()
         {
