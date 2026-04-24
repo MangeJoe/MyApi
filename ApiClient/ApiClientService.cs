@@ -1,23 +1,21 @@
 ﻿using ApiClient.Models;
 using ApiClient.Models.ApiModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApiClient
 {
     public class ApiClientService
     {
         //responsible for sending and receiving HTTP responses and Requests
-        private HttpClient _httpClient;
+        private  HttpClient _httpClient;
 
         public ApiClientService(ApiClientOptions clientOptions)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress=new Uri(clientOptions.ApiBaseAddress);
+            _httpClient = new HttpClient
+            {
+                BaseAddress =new Uri(clientOptions.ApiBaseAddress)
+            };
+            
         }
 
         //get the list of all tasks
