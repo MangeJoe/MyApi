@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyApi.Data;
 using MyApi.Domain.Entities;
+using MyApi.DTOs;
 
 namespace MyApi.Controllers
 {
@@ -14,6 +15,20 @@ namespace MyApi.Controllers
         public TaskController(TaskDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(TodoTask mytask)
+        {
+            await _dbContext.Tasks.AddAsync(mytask);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new ApiResponse<TaskIdDTO>
+            {
+                Success = true,
+                Message="Task has beed added succesfully",
+                Data=new TaskIdDTO { Id = mytask.Id }
+            });
         }
 
         //get a list of all task
@@ -36,14 +51,8 @@ namespace MyApi.Controllers
             return matchedTask;
         }
         //this method is used for creating a new Task
-        [HttpPost]
-        public async Task<ActionResult<TodoTask>> Create(TodoTask mytask)
-        {
-            await _dbContext.Tasks.AddAsync(mytask);
-            await _dbContext.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetById), new {id= mytask.Id}, mytask);
-        }
+      
+        
         //We update a task, using its own object
         [HttpPut]
         public async Task<ActionResult<TodoTask>> Update(TodoTask mytask)
