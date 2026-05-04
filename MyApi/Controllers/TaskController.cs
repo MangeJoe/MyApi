@@ -33,17 +33,17 @@ namespace MyApi.Controllers
 
         //get a list of all task
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoTask>>> GetAsync()
+        public async Task<ActionResult<List<TodoTask>>> GetAsync()
         {
             return await _dbContext.Tasks.ToListAsync();
         }
 
         //get a Task by ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoTask>> GetById(int id)
+        public async Task<ActionResult<TodoTask>> GetById(TaskIdDTO taskIdDTO)
         {
             var matchedTask = await _dbContext.Tasks
-                .SingleOrDefaultAsync(x => x.Id == id);
+                .SingleOrDefaultAsync(x => x.Id == taskIdDTO.Id);
 
             if (matchedTask == null)
                 return NotFound();
