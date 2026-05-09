@@ -40,10 +40,10 @@ namespace MyApi.Controllers
 
         //get a Task by ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoTask>> GetById(TaskIdDTO taskIdDTO)
+        public async Task<ActionResult<TodoTask>> GetById(int id)
         {
             var matchedTask = await _dbContext.Tasks
-                .SingleOrDefaultAsync(x => x.Id == taskIdDTO.Id);
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (matchedTask == null)
                 return NotFound();
@@ -60,22 +60,35 @@ namespace MyApi.Controllers
             _dbContext.Tasks.Update(mytask);
             await _dbContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new ApiResponse<TaskIdDTO>
+            {
+                Success=true,
+                Message="The task has been updated successfully",
+                Data=new TaskIdDTO() { Id=mytask.Id}
+            });
         }
         // delete a task by first checking if it exits then delete if it does
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            //find the task that i want to delete from database using id
             var matchedTask = await _dbContext.Tasks
                 .SingleOrDefaultAsync(x => x.Id == id);
 
+            //if the task was not found return bad request
             if (matchedTask == null)
                 return NotFound();
-
+            //removing and updating Database
             _dbContext.Tasks.Remove(matchedTask);
             await _dbContext.SaveChangesAsync();
 
-            return Ok();
+            //custom response
+            return Ok(new ApiResponse<TaskIdDTO>()
+            {
+                Success = true,
+                Message = "Task deleted successfully!!",
+                Data = new TaskIdDTO() { Id=id}
+            });
         }
 
     }
