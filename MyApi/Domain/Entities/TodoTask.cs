@@ -24,7 +24,7 @@ namespace MyApi.Domain.Entities
 
         //please do not forget that you still have to change this in the database using migrations!!!!!!!!!!!!!!!!!
             [Column("status")]
-            public int Status { get; set; }
+            public bool Status { get; set; }
 
             [Column("priority")]
             public string? Priority { get; set; }
