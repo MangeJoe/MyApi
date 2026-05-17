@@ -12,8 +12,8 @@ using MyApi.Data;
 namespace MyApi.Migrations
 {
     [DbContext(typeof(TaskDbContext))]
-    [Migration("20260418114205_MyDb Migration")]
-    partial class MyDbMigration
+    [Migration("20260517105353_NewCreation")]
+    partial class NewCreation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,6 @@ namespace MyApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("description");
@@ -44,23 +43,22 @@ namespace MyApi.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("duedate");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("int")
-                        .HasColumnName("priority");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int")
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit")
                         .HasColumnName("status");
 
+                    b.Property<string>("Priority")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("priority");
+
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("title");
 
                     b.HasKey("Id");
 
-                    b.ToTable("task");
+                    b.ToTable("TodoTask");
                 });
 #pragma warning restore 612, 618
         }
