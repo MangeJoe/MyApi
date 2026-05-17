@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TaskDbContext>(x=>
 {
-    var connectionString = builder.Configuration.GetConnectionString("NewConnection");
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     x.UseSqlServer(connectionString);
 });
 
